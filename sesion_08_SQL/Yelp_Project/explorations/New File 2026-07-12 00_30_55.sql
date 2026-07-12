@@ -1,0 +1,1 @@
+select * from dbassociate.bronze.b_business;
