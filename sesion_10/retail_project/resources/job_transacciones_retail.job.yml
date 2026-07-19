@@ -1,8 +1,8 @@
 resources:
   jobs:
-    no_prod_daily_transacciones_retail:
+    daily_transacciones_retail:
       name: daily_transacciones_retail
-      description: El WORKFLOW EJECUTA DE MANERA DIARIA
+      description: El workflow ejecutado de manera diaria
       tasks:
         - task_key: bronze_load
           notebook_task:
@@ -14,15 +14,16 @@ resources:
             - task_key: bronze_load
           notebook_task:
             notebook_path: ../src/daily_transacciones_retail/s9_silver.ipynb
-          min_retry_interval_millis: 900000
-          disable_auto_optimization: true
         - task_key: gold_aggregated
           depends_on:
             - task_key: silver_transform
           notebook_task:
             notebook_path: ../src/daily_transacciones_retail/s9_gold.ipynb
-          min_retry_interval_millis: 900000
-          disable_auto_optimization: true
+        - task_key: yelp_project
+          depends_on:
+            - task_key: gold_aggregated
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.yelp_pipeline_project.id}
       tags:
         criticidad: alta
         squad: underworld

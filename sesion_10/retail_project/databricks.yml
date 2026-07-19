@@ -13,6 +13,12 @@ variables:
     description: The catalog to use
   schema:
     description: The schema to use
+  bronze_schema:
+    description: Esquema de bronce
+  silver_schema:
+    description: Esquema de silver
+  gold_schema:
+    description: Esquema gold
 
 targets:
   dev:
@@ -23,19 +29,26 @@ targets:
     mode: development
     default: true
     workspace:
-      host: https://adb-7405607960901443.3.azuredatabricks.net
+      host: https://adb-7405617138371952.12.azuredatabricks.net
     variables:
       catalog: dbassociate
       schema: ${workspace.current_user.short_name}
+      bronze_schema: bronze_dev
+      silver_schema: silver_dev
+      gold_schema: gold_dev
+      
   prod:
     mode: production
     workspace:
-      host: https://adb-7405607960901443.3.azuredatabricks.net
+      host: https://adb-7405617138371952.12.azuredatabricks.net
       # We explicitly deploy to /Workspace/Users/diana.luz.rr.2000@outlook.com to make sure we only have a single copy.
       root_path: /Workspace/Users/diana.luz.rr.2000@outlook.com/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: dbassociate
       schema: prod
+      bronze_schema: bronze_prod
+      silver_schema: silver_prod
+      gold_schema: gold_prod
     permissions:
       - user_name: diana.luz.rr.2000@outlook.com
         level: CAN_MANAGE
